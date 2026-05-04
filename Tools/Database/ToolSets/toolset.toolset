@@ -1,0 +1,17 @@
+{
+	"toolList": [
+		{
+			"name": "bitsHooker",
+			"uuid": "1bdd9dfe-eff0-43af-b0ba-e517df9d1d2f",
+			"previewRenderable": "$GAME_DATA/Character/Char_Tools/char_connecttool_preview.rend",
+			"previewRotation": [1, 0, 0, 0, 0, -1, 0, 1, 0],
+			"script": {
+				"file": "$CONTENT_DATA/Scripts/BitsHooker.lua",
+				"class": "BitsHooker",
+				"data": {}
+			},
+			"showInInventory": false,
+			"autoTool": true
+		}
+	]
+}

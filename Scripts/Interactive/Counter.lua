@@ -1,8 +1,6 @@
 dofile("$CONTENT_DATA/Scripts/Helpers.lua")
 dofile("$CONTENT_DATA/Scripts/InteractiveBase.lua")
-
-local CounterUuid = Helpers:GetUuids().Counter
-local VanillaInteractiveUuids = Helpers:getInteractiveUuids()
+dofile("$CONTENT_DATA/Scripts/Registry.lua")
 
 --- @class Counter : InteractiveBase
 Counter = class(InteractiveBase)
@@ -22,6 +20,12 @@ function Counter:server_onCreate()
     self.storage:save(saved)
 
     self.network:sendToClients("cl_setClientData", { value = saved.value })
+
+    sm.Bits.RegisteredInteractables[self.interactable] = true
+end
+
+function Counter:server_onDestroy()
+    sm.Bits.RegisteredInteractables[self.interactable] = nil
 end
 
 -- Saving
@@ -188,4 +192,8 @@ end
 function Counter:sv_setValue(value)
     self.storage:save({ value = value })
     self.network:sendToClients("cl_setClientData", { value = value })
+end
+
+function Counter:sv_onPlayerJoined(player)
+    self.network:sendToClient(player, "cl_setClientData", { value = self.cl_state.value })
 end
