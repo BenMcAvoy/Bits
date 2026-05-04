@@ -1,0 +1,43 @@
+{
+  "lodList": [
+    {
+      "minViewSize": 20,
+      "mesh": "$CONTENT_DATA/Objects/Mesh/Counter_off.fbx",
+      "pose0": "$CONTENT_DATA/Objects/Mesh/Counter_on.fbx",
+      "includes": [
+        "POSITION",
+        "UV0",
+        "UV1",
+        "NORMAL",
+        "TANGENTS",
+        "BLEND_INDICES",
+        "BLEND_WEIGHTS"
+      ],
+      "subMeshMap": {
+        "logicgate": {
+          "textureList": [
+            "$CONTENT_DATA/Objects/Textures/Counter_dif.tga",
+            "$CONTENT_DATA/Objects/Textures/Counter_asg.tga",
+            "$CONTENT_DATA/Objects/Textures/Counter_nor.tga",
+            "$CONTENT_DATA/Objects/Textures/Counter_ao.tga"
+          ],
+          "material": "PoseAnimDifAsgNorAo"
+        },
+        "screen": {
+          "textureList": [
+            "$CONTENT_DATA/Objects/Textures/Counter_dif.tga",
+            "$CONTENT_DATA/Objects/Textures/Counter_asg.tga",
+            "$CONTENT_DATA/Objects/Textures/Counter_nor.tga"
+          ],
+          "material": "UVAnimDifAsgNor",
+          "custom": {
+            "uv0": {
+              "u": 0.16666667,
+              "v": 0.1645
+            }
+          }
+        }
+      }
+    }
+  ]
+}

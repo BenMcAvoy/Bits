@@ -1,0 +1,36 @@
+<MyGUI type="Layout" version="3.2.0">
+	<Widget type="Widget" align="Center" skin="BackgroundEngineNoUpgrade" name="Timmy" position="740 320 440 440">
+		<Widget type="TextBox" skin="SMTextBox_NoBackground" name="TitleText" position="0 35 435 100">
+			<Property key="Caption" value="COUNTER" />
+			<Property key="FontName" value="SM_HeaderLarge_Wide" />
+			<Property key="TextAlign" value="Center" />
+		</Widget>
+		<Widget type="Widget" skin="LiftInput" name="ValueInputContainer" position="170 170 100 100">
+			<Widget type="EditBox" skin="EditBoxEmpty" name="ValueInput" position="0 0 100 100">
+				<Property key="ReadOnly" value="false" />
+				<Property key="TextAlign" value="Center" />
+				<Property key="FontName" value="SM_TextLabel" />
+				<Property key="Static" value="false" />
+				<Property key="NeedKey" value="true" />
+				<Property key="NeedMouse" value="true" />
+				<Widget type="TextBox" skin="SMTextBox_NoBackground" name="UnsavedIndicator" position="75 5 25 25">
+					<Property key="Caption" value="*" />
+					<Property key="FontName" value="SM_GameName" />
+					<Property key="TextAlign" value="Center" />
+					<Property key="TextColour" value="#ffd64f" />
+				</Widget>
+			</Widget>
+		</Widget>
+		<Widget type="Widget" skin="WhiteSkin" name="Divider" position="25 340 375 1">
+			<Property key="Alpha" value="0.25" />
+		</Widget>
+		<Widget type="TextBox" skin="TextBox" name="DescriptionText" position="35 350 255 50">
+			<Property key="FontName" value="SM_TextSmall" />
+			<Property key="Caption" value="Holds a value, it&apos;s a counter!" />
+		</Widget>
+		<Widget type="Button" skin="DressbotArrowRight" name="IncreaseButton" position="270 200 45 40">
+			<Property key="Alpha" value="1" />
+		</Widget>
+		<Widget type="Button" skin="DressbotArrowLeft" name="DecreaseButton" position="125 200 45 40" />
+	</Widget>
+</MyGUI>

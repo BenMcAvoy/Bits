@@ -1,0 +1,36 @@
+<MyGUI type="Layout" version="3.2.0">
+	<Widget type="Widget" align="Center" skin="BackgroundEngineNoUpgrade" name="Timmy" position_real="0.3854166666666667 0.2962962962962963 0.22916666666666666 0.4074074074074074">
+		<Widget type="TextBox" skin="SMTextBox_NoBackground" name="TitleText" position_real="0 0.07954545454545454 0.9886363636363636 0.22727272727272727">
+			<Property key="Caption" value="COUNTER" />
+			<Property key="FontName" value="SM_HeaderLarge_Wide" />
+			<Property key="TextAlign" value="Center" />
+		</Widget>
+		<Widget type="Widget" skin="LiftInput" name="ValueInputContainer" position_real="0.38636363636363635 0.38636363636363635 0.22727272727272727 0.22727272727272727">
+			<Widget type="EditBox" skin="EditBoxEmpty" name="ValueInput" position_real="0 0 1 1">
+				<Property key="ReadOnly" value="false" />
+				<Property key="TextAlign" value="Center" />
+				<Property key="FontName" value="SM_TextLabel" />
+				<Property key="Static" value="false" />
+				<Property key="NeedKey" value="true" />
+				<Property key="NeedMouse" value="true" />
+				<Widget type="TextBox" skin="SMTextBox_NoBackground" name="UnsavedIndicator" position_real="0.75 0.05 0.25 0.25">
+					<Property key="Caption" value="*" />
+					<Property key="FontName" value="SM_GameName" />
+					<Property key="TextAlign" value="Center" />
+					<Property key="TextColour" value="#ffd64f" />
+				</Widget>
+			</Widget>
+		</Widget>
+		<Widget type="Widget" skin="WhiteSkin" name="Divider" position_real="0.056818181818181816 0.7727272727272727 0.8522727272727273 0.0022727272727272726">
+			<Property key="Alpha" value="0.25" />
+		</Widget>
+		<Widget type="TextBox" skin="TextBox" name="DescriptionText" position_real="0.07954545454545454 0.7954545454545454 0.5795454545454546 0.11363636363636363">
+			<Property key="FontName" value="SM_TextSmall" />
+			<Property key="Caption" value="Holds a value, it&apos;s a counter!" />
+		</Widget>
+		<Widget type="Button" skin="DressbotArrowRight" name="IncreaseButton" position_real="0.6136363636363636 0.45454545454545453 0.10227272727272728 0.09090909090909091">
+			<Property key="Alpha" value="1" />
+		</Widget>
+		<Widget type="Button" skin="DressbotArrowLeft" name="DecreaseButton" position_real="0.2840909090909091 0.45454545454545453 0.10227272727272728 0.09090909090909091" />
+	</Widget>
+</MyGUI>

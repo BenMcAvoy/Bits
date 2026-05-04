@@ -1,0 +1,28 @@
+{
+   "partList" : [
+      {
+         "uuid" : "9953ce34-54cb-40b9-91c6-fe7971cb0007",
+         "name": "Counter",
+         "renderable": "$CONTENT_DATA/Objects/Renderable/Interactive/Counter.rend",
+         "scripted": {
+            "filename": "$CONTENT_DATA/Scripts/Interactive/Counter.lua",
+            "classname": "Counter"
+         },
+         "color": "df7f00",
+			"box": {
+				"x": 1,
+				"y": 1,
+				"z": 1
+			},
+         "rotationSet": "PropYZ",
+         "physicsMaterial": "Mechanical",
+         "ratings": {
+            "density": 2,
+            "durability": 4,
+            "friction": 5,
+            "buoyancy": 8
+         },
+         "flammable": false
+      }
+   ]
+}
