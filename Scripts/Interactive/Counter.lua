@@ -82,7 +82,7 @@ function Counter:client_onFixedUpdate()
     local foundActive = false
     if self.state.hasVanillaParents then
         for _, parent in ipairs(self.interactable:getParents()) do
-            if parent:isActive() then
+            if parent.active then
                 foundActive = true
                 break
             end
@@ -114,7 +114,7 @@ function Counter:cl_debugDraw()
     local parents = self.interactable:getParents()
     local activeParents = 0
     for _, parent in ipairs(parents) do
-        if parent:isActive() then
+        if parent.active then
             activeParents = activeParents + 1
         end
     end
@@ -122,7 +122,7 @@ function Counter:cl_debugDraw()
     local children = self.interactable:getChildren()
     local activeChildren = 0
     for _, child in ipairs(children) do
-        if child:isActive() then
+        if child.active then
             activeChildren = activeChildren + 1
         end
     end
