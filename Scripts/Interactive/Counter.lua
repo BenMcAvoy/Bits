@@ -1,5 +1,5 @@
-dofile("$CONTENT_DATA/Scripts/Helpers.lua")
-dofile("$CONTENT_DATA/Scripts/InteractiveBase.lua")
+dofile("$CONTENT_DATA/Scripts/Shared/Helpers.lua")
+dofile("$CONTENT_DATA/Scripts/Base/InteractiveBase.lua")
 
 --- @class Counter : InteractiveBase
 Counter = class(InteractiveBase)
@@ -37,8 +37,6 @@ function Counter:server_onUnload()
     end
 end
 
--- Scrap Mechanic's host server can see host-client script fields. Keep that
--- bridge explicit because it is how local simulation requests server effects.
 function Counter:sv_getHostClientState()
     return self.state
 end

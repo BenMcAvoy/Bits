@@ -10,7 +10,7 @@ local oldBindCommand = sm.game.bindChatCommand
 
 local function bindCommandHook(command, params, callback, help)
     if not sm.Bits.hooked then
-        dofile("$CONTENT_374a306d-4b45-49ed-9cab-93a894be86ad/Scripts/BitsDoFile.lua")
+        dofile("$CONTENT_374a306d-4b45-49ed-9cab-93a894be86ad/Scripts/Bootstrap/BitsDoFile.lua")
 
         sm.Bits.hooked = true
     end
