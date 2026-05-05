@@ -1,6 +1,5 @@
 dofile("$CONTENT_DATA/Scripts/Helpers.lua")
 dofile("$CONTENT_DATA/Scripts/InteractiveBase.lua")
-dofile("$CONTENT_DATA/Scripts/Registry.lua")
 
 --- @class Counter : InteractiveBase
 Counter = class(InteractiveBase)
@@ -17,6 +16,7 @@ Counter.colorNormal = sm.color.new( "FF6753" )
 --- Called when the counter is created
 function Counter:server_onCreate()
     local saved = self.storage:load() or { value = 0 }
+    self.savedValue = saved.value
     self.storage:save(saved)
 
     self.network:sendToClients("cl_setClientData", { value = saved.value })
@@ -28,15 +28,36 @@ function Counter:server_onDestroy()
     sm.Bits.RegisteredInteractables[self.interactable] = nil
 end
 
+function Counter:server_onUnload()
+    local state = self:sv_getHostClientState()
+    if state and state.dirty then
+        self.storage:save({ value = state.value })
+        self.savedValue = state.value
+        state.dirty = false
+    end
+end
+
+-- Scrap Mechanic's host server can see host-client script fields. Keep that
+-- bridge explicit because it is how local simulation requests server effects.
+function Counter:sv_getHostClientState()
+    return self.state
+end
+
 -- Saving
 function Counter:server_onFixedUpdate()
-    if self.cl_state.dirty then
-        self.storage:save({ value = self.cl_state.value })
-        self.cl_state.dirty = false
+    local state = self:sv_getHostClientState()
+    if not state then
+        return
     end
 
-    if self.cl_state.hasVanillaChildren then
-        self.interactable.active = self.cl_state.value ~= 0
+    if state.dirty then
+        self.storage:save({ value = state.value })
+        self.savedValue = state.value
+        state.dirty = false
+    end
+
+    if state.hasVanillaChildren then
+        self.interactable.active = state.value ~= 0
     end
 end
 
@@ -51,7 +72,7 @@ function Counter:client_onCreate()
 
     self.gui:setOnCloseCallback("cl_onGuiCloseCallback")
 
-    self.cl_state = {
+    self.state = self.state or {
         value = 0,
         dirty = false, -- needs saving
     }
@@ -61,7 +82,7 @@ function Counter:client_onFixedUpdate()
     InteractiveBase.client_onFixedUpdate(self)
 
     local foundActive = false
-    if self.cl_state.hasVanillaParents then
+    if self.state.hasVanillaParents then
         for _, parent in ipairs(self.interactable:getParents()) do
             if parent:isActive() then
                 foundActive = true
@@ -70,13 +91,13 @@ function Counter:client_onFixedUpdate()
         end
 
         if foundActive then
-            self.cl_state.value = self.cl_state.value + 1
-            self.cl_state.dirty = true -- needs saving
+            self.state.value = self.state.value + 1
+            self.state.dirty = true -- needs saving
         end
     end
 
     local offset = foundActive and 6 or 0
-    local frameIndex = (math.floor(math.abs(self.cl_state.value) / 3) % 6) + offset
+    local frameIndex = (math.floor(math.abs(self.state.value) / 3) % 6) + offset
     self.interactable:setUvFrameIndex(frameIndex)
 
     self:cl_debugDraw()
@@ -108,16 +129,16 @@ function Counter:cl_debugDraw()
         end
     end
 
-    local color = self.cl_state.dirty and "#ffaa00" or "#00ff88"
+    local color = self.state.dirty and "#ffaa00" or "#00ff88"
     local text = string.format(
         '%sValue: %d  parents: %d/%d  children: %d/%d%s',
         color,
-        self.cl_state.value,
+        self.state.value,
         activeParents,
         #parents,
         activeChildren,
         #children,
-        self.cl_state.dirty and "  *" or ""
+        self.state.dirty and "  *" or ""
     )
 
     self.cl_debugTag:setWorldPosition(origin)
@@ -140,7 +161,7 @@ function Counter:client_onInteract(_, lookAt)
     self.gui:open()
     self.gui:setFocus("ValueInput")
 
-    self.gui:setText("ValueInput", tostring(self.cl_state.value))
+    self.gui:setText("ValueInput", tostring(self.state.value))
 end
 
 function Counter:cl_guiInteract(widgetName, parameter)
@@ -150,34 +171,40 @@ function Counter:cl_guiInteract(widgetName, parameter)
     end
 
     if widgetName == "IncreaseButton" then
-        self.network:sendToServer("sv_setValue", self.cl_state.value + 1)
+        self.network:sendToServer("sv_setValue", self.state.value + 1)
     elseif widgetName == "DecreaseButton" then
-        self.network:sendToServer("sv_setValue", self.cl_state.value - 1)
+        self.network:sendToServer("sv_setValue", self.state.value - 1)
     end
 end
 
 function Counter:cl_guiInteractTextChanged(_, text)
     if text ~= "" and not tonumber(text) then
-        self.gui:setText("ValueInput", self.lastText or tostring(self.cl_state.value))
+        self.gui:setText("ValueInput", self.lastText or tostring(self.state.value))
         return
     end
 
     self.lastText = text
-    self.gui:setVisible("UnsavedIndicator", text ~= tostring(self.cl_state.value))
+    self.gui:setVisible("UnsavedIndicator", text ~= tostring(self.state.value))
 end
 
 function Counter:cl_onGuiCloseCallback()
-    self.lastText = tostring(self.cl_state.value)
+    self.lastText = tostring(self.state.value)
 
-    self.gui:setText("ValueInput", tostring(self.cl_state.value))
+    self.gui:setText("ValueInput", tostring(self.state.value))
     self.gui:setVisible("UnsavedIndicator", false)
 end
 
 function Counter:cl_setClientData(data, _)
-    self.cl_state.value = data.value
+    self.state = self.state or {
+        value = 0,
+        dirty = false,
+    }
+    self.state.value = data.value
 
-    self.gui:setText("ValueInput", tostring(data.value))
-    self.gui:setVisible("UnsavedIndicator", false)
+    if self.gui then
+        self.gui:setText("ValueInput", tostring(data.value))
+        self.gui:setVisible("UnsavedIndicator", false)
+    end
 end
 
 function Counter:client_canInteract()
@@ -185,15 +212,18 @@ function Counter:client_canInteract()
 end
 
 function Counter:cl_onConnectionChanged()
-    self.cl_state.hasVanillaChildren = self:cl_hasVanillaChildren()
-    self.cl_state.hasVanillaParents = self:cl_hasVanillaParents()
+    self.state.hasVanillaChildren = self:cl_hasVanillaChildren()
+    self.state.hasVanillaParents = self:cl_hasVanillaParents()
 end
 
 function Counter:sv_setValue(value)
+    self.savedValue = value
     self.storage:save({ value = value })
     self.network:sendToClients("cl_setClientData", { value = value })
 end
 
 function Counter:sv_onPlayerJoined(player)
-    self.network:sendToClient(player, "cl_setClientData", { value = self.cl_state.value })
+    local state = self:sv_getHostClientState()
+    local value = state and state.value or self.savedValue or 0
+    self.network:sendToClient(player, "cl_setClientData", { value = value })
 end
