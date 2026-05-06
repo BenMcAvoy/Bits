@@ -15,7 +15,7 @@ for _, gameClass in ipairs(gameClasses) do
     local oldOnPlayerJoined = gameClass.server_onPlayerJoined
 
     gameClass.server_onPlayerJoined = function(self, player, newPlayer)
-        for interactable, _ in pairs(sm.Bits.RegisteredInteractables) do
+        for interactable, _ in pairs(sm.Bits.Server.OnPlayerJoinedSubscribers) do
             sm.event.sendToInteractable(interactable, "sv_onPlayerJoined", player)
         end
 

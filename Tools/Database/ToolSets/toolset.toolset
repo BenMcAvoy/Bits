@@ -12,6 +12,19 @@
 			},
 			"showInInventory": false,
 			"autoTool": true
+		},
+		{
+			"name": "bitsBookkeeper",
+			"uuid": "d41cb14e-cb4d-43e8-bedd-db17d2c96ca8",
+			"previewRenderable": "$GAME_DATA/Character/Char_Tools/char_connecttool_preview.rend",
+			"previewRotation": [1, 0, 0, 0, 0, -1, 0, 1, 0],
+			"script": {
+				"file": "$CONTENT_DATA/Scripts/Client/BitsBookkeeper.lua",
+				"class": "BitsBookkeeper",
+				"data": {}
+			},
+			"showInInventory": false,
+			"autoTool": true
 		}
 	]
 }
