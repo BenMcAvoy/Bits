@@ -271,12 +271,6 @@ function Counter:cl_setClientData(data, _)
     end
 end
 
---- Allows players to interact with the counter.
---- @return boolean
-function Counter:client_canInteract()
-    return true
-end
-
 --- Recomputes whether this counter is connected to vanilla parents/children.
 function Counter:cl_onConnectionChanged()
     self.svcl_state.hasVanillaChildren = self:cl_hasVanillaChildren()
